@@ -239,4 +239,4 @@ Glass demos verify by *state* (rest / hover / enter) and *time* (the sweep/refra
 CSS drives the forced state: `:root[data-state="hover"] .glass { /* hover values */ }`.
 
 ---
-Frosted glass that reads as glass — blur, edge light, and refraction, with a clean fallback. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Frosted glass that reads as glass — blur, edge light, and refraction, with a clean fallback. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=web-animation-skills&utm_content=skill_footer&utm_term=glassmorphism)** — the AI motion agent for editable, on-brand motion graphics.

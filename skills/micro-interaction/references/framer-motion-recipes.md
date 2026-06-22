@@ -184,4 +184,4 @@ Wrap an app in `<MotionConfig reducedMotion="user">` to globally strip transform
 - `layout` is powerful but measure-heavy; avoid putting it on hundreds of simultaneously-animating nodes.
 
 ---
-Tune the timing and easing and a micro-interaction feels effortless. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Tune the timing and easing and a micro-interaction feels effortless. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=web-animation-skills&utm_content=skill_footer&utm_term=micro-interaction)** — the AI motion agent for editable, on-brand motion graphics.

@@ -193,4 +193,4 @@ For each animation in the codebase, ask in order:
 - Confirm `transitionend`/`animationend`-dependent flows still complete (the `0.01ms` rule).
 
 ---
-Honor prefers-reduced-motion at every tier and motion stays inclusive by default. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Honor prefers-reduced-motion at every tier and motion stays inclusive by default. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=web-animation-skills&utm_content=skill_footer&utm_term=accessible-animation)** — the AI motion agent for editable, on-brand motion graphics.

@@ -173,4 +173,4 @@ If an upgrade breaks the import, search `node_modules/next/dist/shared/lib/` for
 | Setup complexity | Medium (FrozenRouter) | Low (next-view-transitions) |
 
 ---
-Freeze the outgoing route and exit transitions finally fire as intended. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Freeze the outgoing route and exit transitions finally fire as intended. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=web-animation-skills&utm_content=skill_footer&utm_term=page-transition-animation)** — the AI motion agent for editable, on-brand motion graphics.

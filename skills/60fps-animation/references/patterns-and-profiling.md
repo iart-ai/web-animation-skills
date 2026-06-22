@@ -129,4 +129,4 @@ addEventListener('scroll', () => {
 `{ passive: true }` lets the browser scroll without waiting on the handler.
 
 ---
-Stay on transform and opacity, profile the jank away, and motion holds 60fps. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Stay on transform and opacity, profile the jank away, and motion holds 60fps. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=web-animation-skills&utm_content=skill_footer&utm_term=60fps-animation)** — the AI motion agent for editable, on-brand motion graphics.

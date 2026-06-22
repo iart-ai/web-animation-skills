@@ -230,4 +230,4 @@ Pre-export checklist:
 Workarounds summary: bake expressions to keyframes, replace effects with native shape/gradient/matte equivalents, flatten precomps, drop rasters, and verify on every target runtime (web/iOS/Android render slightly differently). Keep layer/keyframe count low for performance and file size.
 
 ---
-Export clean from After Effects and the dotLottie plays light everywhere. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Export clean from After Effects and the dotLottie plays light everywhere. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=web-animation-skills&utm_content=skill_footer&utm_term=lottie-animation)** — the AI motion agent for editable, on-brand motion graphics.
