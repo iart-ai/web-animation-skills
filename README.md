@@ -18,7 +18,7 @@ Or add it as a Claude Code plugin marketplace:
 
 then `/plugin install web-animation-skills`.
 
-Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
+The skills run in Claude Code, Cursor, Codex, and 40+ agents. The full agent runs at **[iart.ai](https://iart.ai)**.
 
 ## What's included
 
@@ -71,6 +71,24 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 Part of a 14-pack open-source collection — install only what you need. Full hub: **[github.com/iart-ai](https://github.com/iart-ai)**
 
 [tiktok-video-skills](https://github.com/iart-ai/tiktok-video-skills) (TikTok / Reels / Shorts) · [text-message-video-skills](https://github.com/iart-ai/text-message-video-skills) (Text-message stories) · [youtube-video-skills](https://github.com/iart-ai/youtube-video-skills) (Podcasters & YouTubers) · [ecommerce-video-skills](https://github.com/iart-ai/ecommerce-video-skills) (E-commerce sellers) · [ad-video-skills](https://github.com/iart-ai/ad-video-skills) (Brand advertisers) · [data-animation-skills](https://github.com/iart-ai/data-animation-skills) (Analysts & PMs) · [explainer-video-skills](https://github.com/iart-ai/explainer-video-skills) (Educators) · [map-animation-skills](https://github.com/iart-ai/map-animation-skills) (Vox-style maps) · [motion-design-skills](https://github.com/iart-ai/motion-design-skills) (Motion designers) · [kinetic-typography-skills](https://github.com/iart-ai/kinetic-typography-skills) (Kinetic type / text) · [freelance-motion-skills](https://github.com/iart-ai/freelance-motion-skills) (Freelancers & studios) · [webgl-animation-skills](https://github.com/iart-ai/webgl-animation-skills) (3D / WebGL) · [manim-skills](https://github.com/iart-ai/manim-skills) (Math / educational)
+
+Install any of them:
+
+```bash
+npx skills add iart-ai/tiktok-video-skills
+npx skills add iart-ai/text-message-video-skills
+npx skills add iart-ai/youtube-video-skills
+npx skills add iart-ai/ecommerce-video-skills
+npx skills add iart-ai/ad-video-skills
+npx skills add iart-ai/data-animation-skills
+npx skills add iart-ai/explainer-video-skills
+npx skills add iart-ai/map-animation-skills
+npx skills add iart-ai/motion-design-skills
+npx skills add iart-ai/kinetic-typography-skills
+npx skills add iart-ai/freelance-motion-skills
+npx skills add iart-ai/webgl-animation-skills
+npx skills add iart-ai/manim-skills
+```
 
 
 ## License
