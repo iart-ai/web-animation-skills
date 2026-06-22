@@ -1,6 +1,6 @@
 ---
 name: page-transition-animation
-description: This skill should be used when the user asks to "add page transitions in Next.js App Router", "AnimatePresence exit doesn't fire on navigation", "Framer Motion exit animation not working in Next.js", "animate route changes in Next.js", "use View Transitions API in Next.js", or "exit animation before page unmounts in App Router".
+description: This skill should be used when the user asks to "animate page or route transitions", "add a page transition or crossfade between views", "animate route changes in Next.js App Router", "use the View Transitions API", "AnimatePresence exit doesn't fire on navigation", or "Framer Motion exit animation not working / exit animation before unmount in Next.js". Covers enter/exit page-transition animation with the View Transitions API and Framer Motion, for Next.js App Router and general SPA routing.
 version: 0.1.0
 ---
 
