@@ -156,6 +156,39 @@ When exit still won't fire, verify in order:
 6. **`'use client'`** on every file using AnimatePresence/usePathname/motion.
 7. **Single child at a time** under `mode="wait"` — AnimatePresence expects one keyed presence to swap.
 
+## Deliver & verify (standalone HTML)
+
+The real target is a Next.js app, but to *prove the transition shape* (the enter/exit curve, direction, crossfade) you can ship **one HTML file that opens directly in a browser** — two stub "pages" you toggle, animated with `motion` from CDN or the native View Transitions API. One file is the right tier for validating motion before wiring the router; don't stand up Next just to eyeball a fade.
+
+**Output contract:**
+- One `.html` file: two view stubs and a toggle, animated with either an inline `<script type="module">` importing `motion`/React from CDN, or `document.startViewTransition` + `::view-transition-*` CSS.
+- A way to freeze the **resolved end state** — a route transition is state-driven (which view, mid-swap), so screenshot the state, not a clock.
+
+**Seek harness — pin a transition phase.** `?view=b` mounts the destination view (or `?phase=exit` to hold the outgoing tree mid-animation) so a screenshot lands on a settled phase:
+
+```html
+<script>
+  const p = new URLSearchParams(location.search);
+  document.documentElement.dataset.view = p.get("view") || "a";   // CSS/React keys off this
+  // Framer Motion: set the controlled key/route from ?view; for mode="wait" the resolved end is the new page
+  // View Transitions: screenshot the END state (snapshots are transient); or pause via emulate slow animations
+  window.__ready = true;
+</script>
+```
+
+**Verify loop — render → set phase → screenshot → check:** open source, mid, and destination (`?view=a`, `?phase=exit`, `?view=b`), screenshot each, and check **fidelity** (exit actually runs, direction/crossfade matches the brief, no `mode="wait"` lag) plus **artifacts** (outgoing tree flashing the new page's content, double-mount, FOUC, jank). Any headless tool works:
+
+```bash
+npx playwright screenshot --wait-for-timeout=500 "file://$PWD/transition.html?view=b" dest.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors, CDN `motion`/React (if used) resolves, `startViewTransition` guarded.
+2. The `?view=`/`?phase=` freeze lands a deterministic transition phase.
+3. Screenshotted at source / mid / destination — matches the brief, no content flash or skipped exit.
+4. `prefers-reduced-motion` honored — slide/translate dropped to a short crossfade.
+5. Easing is intentional — entrances ease-out, exits ease-in, durations ~0.2–0.4s (not laggy under `mode="wait"`).
+
 ## Quick reference
 
 | Need | Approach |

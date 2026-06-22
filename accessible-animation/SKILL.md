@@ -163,6 +163,42 @@ Initialize SSR-rendered state to `false` (motion) and re-sync in `useEffect` to 
 - **C39 (CSS technique).** Use the `prefers-reduced-motion` query to prevent motion. This is the named sufficient technique.
 - **2.2.2 Pause, Stop, Hide (A).** Any auto-playing motion lasting >5s must offer pause/stop. Auto-carousels and marquees fail this regardless of the media query — give a control too.
 
+## Deliver & verify (standalone HTML)
+
+For a self-contained demo the deliverable is **one HTML file that opens directly in a browser** — markup, CSS, and any JS (GSAP/`matchMedia` from CDN) inline, no build step. For *this* skill the verification is the point: you must screenshot **both** the normal and the reduced-motion path and confirm the tiering is correct.
+
+**Output contract:**
+- One `.html` file with the full motion AND its tiered reduced-motion overrides (CSS query + `matchMedia`/`gsap.matchMedia()` for JS-driven motion).
+- A seek harness to freeze a frame, plus a way to force the reduced-motion code path for screenshots.
+
+**Seek harness — freeze a frame, force the preference.** `?t=N` freezes the timeline; `?reduce=1` forces the reduced path even when the OS setting is off (CSS can't be toggled from JS, so query the same flag you gate JS on, and screenshot with the OS/browser preference emulated for the CSS layer):
+
+```html
+<script>
+  const q = new URLSearchParams(location.search);
+  const reduce = q.get("reduce") === "1"
+    || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // build motion conditionally on `reduce` (Tier-1 removed, Tier-2 softened, Tier-3 kept)
+  const t = q.get("t");
+  if (t !== null) { tl.pause(); tl.seek(parseFloat(t)); }      // GSAP; CSS: el.style.animationDelay=(-t)+"s"; playState="paused"
+  window.__ready = true;
+</script>
+```
+
+**Verify loop — screenshot BOTH states:** capture the normal path AND the reduced path, mid-animation each, and confirm Tier-1 motion is gone, Tier-2 is a short fade, Tier-3 survives. Emulate the preference for the CSS layer (Playwright `--reduced-motion=reduce`; the agent's browser tool can emulate it too):
+
+```bash
+npx playwright screenshot --wait-for-timeout=500 "file://$PWD/demo.html?t=0.6" normal.png
+npx playwright screenshot --reduced-motion=reduce --wait-for-timeout=500 "file://$PWD/demo.html?t=0.6&reduce=1" reduced.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors, CDN (if any) loads.
+2. The freeze + `?reduce=1` (and `--reduced-motion=reduce`) reliably exercises both code paths.
+3. Screenshotted in BOTH states, mid-animation — normal looks intentional, reduced strips Tier-1/softens Tier-2.
+4. `prefers-reduced-motion` honored as *tiering*, not a kill switch — no teleporting, Tier-3 fades/focus rings/spinners kept; any >5s auto-motion still has a pause control (2.2.2).
+5. Easing is intentional in both paths — no accidental `linear`, durations sane (reduced fades ≤200ms, `0.01ms` not `0s`).
+
 ## Quick reference
 
 | Motion type | Tier | Reduced behavior |

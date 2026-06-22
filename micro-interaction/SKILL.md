@@ -119,6 +119,39 @@ Always include a reduced-motion guard:
 
 Loading → success → error should be one continuous motion (e.g. a button morphs spinner → checkmark), not a jump cut. Keep the element mounted and animate between states so the eye tracks the same object.
 
+## Deliver & verify (standalone HTML)
+
+For a self-contained interaction demo (toggle, like button, toast, drawer) the deliverable is **one HTML file that opens directly in a browser**. Pure-CSS interactions ship as-is; for a Framer Motion demo, load React + `motion` from CDN (`esm.sh`) into one inline module — no build step. One file is the right tier; don't reach for a bundler.
+
+**Output contract:**
+- One `.html` file: your markup plus either CSS transitions/`@starting-style` or an inline `<script type="module">` importing `motion` from CDN.
+- A way to land on the **resolved end state** for a screenshot — interactions are state-driven, not time-driven, so freeze the state rather than a clock.
+
+**Seek harness — pin a deterministic state.** A micro-interaction's "frames" are its states (idle / hover / pressed / open). `?state=open` applies the target state on load so a screenshot captures it settled:
+
+```html
+<script>
+  const s = new URLSearchParams(location.search).get("state");
+  if (s) document.documentElement.dataset.state = s;   // CSS keys off [data-state="open"]
+  // Framer Motion: set the controlled prop from `s` (e.g. const [open]=useState(s==="open"))
+  // For a CSS @keyframes loop instead, freeze it: el.style.animationDelay=(-N)+"s"; el.style.animationPlayState="paused";
+  window.__ready = true;
+</script>
+```
+
+**Verify loop — render → set state → screenshot → check:** open each meaningful state (`?state=idle`, `?state=hover`, `?state=open`), screenshot, and check **fidelity** (press feedback reads instant, exit runs before unmount) plus **artifacts** (`layout` distorting `border-radius`/text, toast holding space after exit, FOUC, jank). Any headless tool works:
+
+```bash
+npx playwright screenshot --wait-for-timeout=400 "file://$PWD/demo.html?state=open" open.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors, CDN React/`motion` (if used) resolves.
+2. The `?state=` (or controlled-prop) freeze lands a deterministic, settled state.
+3. Screenshotted across states — idle / active / open — matches the brief, no artifacts.
+4. `prefers-reduced-motion` honored — large movement dropped, opacity/feedback kept.
+5. Easing is intentional — enter ease-out, exit ease-in, durations in the 100–250ms band.
+
 ## Quick reference
 
 | Need | Approach |

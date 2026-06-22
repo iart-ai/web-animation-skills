@@ -154,6 +154,34 @@ For frame-synced work, read in a `requestAnimationFrame` callback and apply writ
 
 Rules: apply just before the animation (e.g. on hover/parent state), remove it after (`will-change: auto`) when idle, never blanket-apply to many elements, and never leave it permanently on large/numerous nodes. A single `transform: translateZ(0)` hack does the same promotion but is harder to undo — prefer `will-change`.
 
+## Deliver & verify (standalone HTML)
+
+The deliverable is **one self-contained `.html`** that opens directly in a browser — the markup, the CSS/JS animation, and a freeze harness in one file. For this skill, verification is two-pronged: the frame must look right *and* be cheap to produce (compositor-only).
+
+**Output contract:**
+- One `.html`, deps via CDN if any, animation driven by CSS transitions/`@keyframes` or the Web Animations API.
+- A freeze mechanism so a screenshot lands on a deterministic frame:
+  - CSS `@keyframes` → `?t=N` sets `el.style.animationDelay = (-N)+'s'; el.style.animationPlayState = 'paused'`.
+  - WAAPI / JS → keep the animation object and `anim.pause(); anim.currentTime = N*1000`.
+
+**Verify loop — freeze → screenshot, then profile for jank:**
+1. Open headless at start / mid / end (`?t=0`, mid, end), screenshot each; confirm the motion is visually correct (no clipped/stretched text from `scaleX`, FLIP lands on the real layout, shadow/height transitions look right).
+2. **Confirm it's compositor-only** — the whole point of this skill. Either:
+   - DevTools → Performance: record the animation, check there is **no purple "Layout" or green "Paint"** band per frame (only "Composite Layers").
+   - Or headless trace: `npx playwright screenshot` for the visual, plus a CDP/`tracing` capture, and assert no `Layout`/`Paint` events fire during the animation window.
+3. Watch the FPS/“Frame Rendering Stats” overlay stays at 60 — dropped frames mean an expensive property slipped back in.
+
+```bash
+npx playwright screenshot --wait-for-timeout=500 "file://$PWD/anim.html?t=0.3" frame.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors.
+2. Only `transform` / `opacity` animate per frame; DevTools shows no per-frame Layout/Paint.
+3. Screenshotted at start / mid / end — correct, no `scaleX` text distortion, FLIP lands true.
+4. Holds 60fps; `will-change` applied just-in-time and removed when idle (no leftover layers).
+5. `prefers-reduced-motion` honored.
+
 ## Quick reference
 
 | Goal | Do this |

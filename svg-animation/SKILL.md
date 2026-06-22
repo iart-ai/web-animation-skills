@@ -122,6 +122,44 @@ SMIL caveat: not supported in IE/old Edge and historically deprecation-flagged; 
 - For draw-on, ensure paths are actual strokes (`fill:none; stroke:...`), not filled outlines — dashoffset only affects strokes.
 - Respect `prefers-reduced-motion`: gate looping/large motion; keep a static final state.
 
+## Deliver & verify (standalone HTML)
+
+For a self-contained icon/logo/draw-on the deliverable is **one HTML file that opens directly in a browser** — inline the SVG in the markup, drive the animation with one mechanism, no build step. One file is the right tier for a vector asset; don't reach for a bundler.
+
+**Output contract:**
+- One `.html` file: inline `<svg>`, plus CSS `@keyframes` / a `<script>` with GSAP from CDN / SMIL `<animate*>` — pick one driver.
+- Include the seek harness matching that driver so any moment can be frozen for a screenshot.
+
+**Seek harness — freeze an exact moment.** `?t=N` seeks and pauses so a screenshot lands on a still frame. Use the mechanism that matches how the SVG animates:
+
+```html
+<script>
+  const t = new URLSearchParams(location.search).get("t");
+  if (t !== null) {
+    const N = parseFloat(t);
+    // SMIL: pause the SVG's own clock and scrub it
+    const svg = document.querySelector("svg");
+    svg.pauseAnimations(); svg.setCurrentTime(N);
+    // CSS @keyframes draw-on: el.style.animationDelay=(-N)+"s"; el.style.animationPlayState="paused";
+    // GSAP timeline: tl.pause(); tl.seek(N);
+  }
+  window.__ready = true;
+</script>
+```
+
+**Verify loop — render → freeze → screenshot → check:** open the file at start / mid / end (`?t=0`, `?t=<dur/2>`, `?t=<dur>`), screenshot each, and check **fidelity** (stroke draws in the right direction, morph endpoints clean) plus **artifacts** (path clipped by `viewBox`, stroke vanishing from a stale dashoffset, FOUC, jank at the morph seam). Any headless tool works:
+
+```bash
+npx playwright screenshot --wait-for-timeout=500 "file://$PWD/icon.html?t=0.7" frame-mid.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors, inline SVG reachable, CDN (if any) loads.
+2. The seek mechanism for your driver freezes a deterministic frame.
+3. Screenshotted at start / mid / end — matches the brief, no clipping or off-`viewBox` strokes.
+4. `prefers-reduced-motion` honored — looping/large motion gated, static final state kept.
+5. Easing is intentional — `ease`/GSAP ease chosen on purpose, no accidental `linear` draw-on.
+
 ## Reference files
 
 - `references/svg-techniques.md` — full dashoffset math and `getTotalLength` gotchas, the `pathLength="1"` normalization, GSAP MorphSVG vs Flubber decision guide with code, an icon-toggle morph (hamburger↔close), MotionPath/offset-path details, SMIL-vs-CSS-vs-JS tradeoffs, and an SVGO config tuned for animation.

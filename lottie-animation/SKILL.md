@@ -125,6 +125,42 @@ The same `.lottie`/`.json` plays across all; segments and progress concepts matc
 - Keep AE comps small: fewer layers/keyframes, no large embedded rasters; flatten precomps where possible. File size tracks keyframe and path complexity, not duration.
 - Recolor at runtime (themes) instead of exporting a file per brand/theme.
 
+## Deliver & verify (standalone HTML)
+
+For a self-contained Lottie demo (looping illustration, animated icon, empty state) the deliverable is **one HTML file that opens directly in a browser** — the dotLottie/lottie-web runtime from CDN, a `<canvas>`, and your `.lottie`/`.json` (a relative file or a data URL). No build step. One file is the right tier for shipping a player; don't reach for a bundler.
+
+**Output contract:**
+- One `.html` file: the runtime via CDN (`@lottiefiles/dotlottie-web`), the canvas, and `autoplay:false` so the frame is yours to drive.
+- Include the seek harness so any frame can be frozen for a screenshot.
+
+**Seek harness — freeze an exact frame.** `?t=N` jumps to a frame and holds it so a screenshot lands on a still, deterministic frame. Lottie's playhead is in frames, so stop on the frame directly:
+
+```html
+<script>
+  const dl = new DotLottie({ canvas, src: "/icon.lottie", autoplay: false });
+  dl.addEventListener("load", () => {
+    const t = new URLSearchParams(location.search).get("t");
+    if (t !== null) dl.setFrame(parseFloat(t));      // freeze on frame N (lottie-web: anim.goToAndStop(N, true))
+    else dl.play();
+    console.log("totalFrames", dl.totalFrames);       // read for end-frame
+    window.__ready = true;
+  });
+</script>
+```
+
+**Verify loop — render → freeze → screenshot → check:** open the file at first / mid / last frame (`?t=0`, `?t=<total/2>`, `?t=<total-1>`; read `totalFrames` from the console), screenshot each, and check **fidelity** (colors/theme correct, segment loops where intended) plus **artifacts** (canvas blurry from missing `autoResize`/DPR, clipped composition, FOUC before the file loads, jank). Any headless tool works:
+
+```bash
+npx playwright screenshot --wait-for-timeout=600 "file://$PWD/lottie.html?t=42" frame-mid.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors, CDN runtime and the `.lottie`/`.json` load.
+2. `?t=N` (`setFrame`/`goToAndStop`) freezes the correct, deterministic frame.
+3. Screenshotted at first / mid / last frame — matches the brief, sharp, no clipping.
+4. `prefers-reduced-motion` honored — don't `autoplay` a loop; show a static frame or offer a play control.
+5. Easing is intentional — playback speed/segment chosen on purpose, motion baked in AE reads as designed.
+
 ## Quick reference
 
 | Goal | Call |

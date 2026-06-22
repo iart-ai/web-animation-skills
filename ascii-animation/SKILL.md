@@ -126,6 +126,39 @@ process.on('SIGINT', () => {
 ```
 Use `ESC + '2J'` to clear the whole screen, `ESC + 'H'` for home (cheaper per frame than clearing). Color with `\x1b[38;2;R;G;Bm` (truecolor) and reset with `\x1b[0m`.
 
+## Deliver & verify (standalone HTML)
+
+For a self-contained web ASCII piece (generative field, image/video→ASCII, `AsciiEffect` scene) the deliverable is **one HTML file that opens directly in a browser** — the `<pre>`/canvas, the ramp, and the rAF loop inline (Three.js from CDN if used). No build step. One file is the right tier; don't reach for a bundler. (Terminal/CLI pieces verify differently — capture stdout or a screenshot of the terminal.)
+
+**Output contract:**
+- One `.html` file: the render target, the brightness ramp, and the `requestAnimationFrame` loop in one inline `<script>`.
+- Drive frames from an **injectable time** (not `Date.now()`/`performance.now()` directly) and seed any randomness, so a frame is reproducible.
+
+**Seek harness — freeze the rAF loop on a deterministic frame.** `?t=N` renders exactly one frame at simulated time `N` instead of looping, so a screenshot is reproducible. Feed `N` where the loop reads time, and fix the seed:
+
+```html
+<script>
+  const t = new URLSearchParams(location.search).get("t");
+  // your frame(time){…} reads `time`, not Date.now(); RNG uses a fixed seed
+  if (t !== null) { frame(parseFloat(t)); }        // render ONE frame, no rAF
+  else { (function loop(now){ frame(now); requestAnimationFrame(loop); })(0); }
+  window.__ready = true;
+</script>
+```
+
+**Verify loop — render → freeze → screenshot → check:** render at a few simulated times (`?t=0`, `?t=1000`, `?t=2000`), screenshot each, and check **fidelity** (ramp reads dark→light correctly, motion evolves) plus **artifacts** (vertical stretch from missing cell-aspect correction, wrong invert on a light bg, clipped grid, FOUC before the monospace font loads — fonts settle the cell metrics, so wait). Any headless tool works:
+
+```bash
+npx playwright screenshot --wait-for-timeout=500 "file://$PWD/ascii.html?t=1000" frame-mid.png
+```
+
+**Before you finish:**
+1. Opens standalone — no console errors, CDN (Three.js, if used) loads, monospace font applied.
+2. `?t=N` renders one deterministic frame (injected time + fixed seed), no live loop.
+3. Screenshotted at 3 simulated times — matches the brief, no vertical stretch or wrong-invert.
+4. `prefers-reduced-motion` honored — stop/slow the rAF loop, show a static frame.
+5. Easing is intentional — frame rate throttled on purpose (12–24fps for retro feel), ramp ordering deliberate.
+
 ## Quick reference
 
 | Need | Approach |
