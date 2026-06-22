@@ -160,6 +160,49 @@ useEffect(() => {
 }, []);
 ```
 
+## Deliver & verify (standalone HTML)
+
+For a self-contained animation (hero, reveal, loop, micro-scene) the deliverable is **one HTML file that opens directly in a browser** — no build step, no framework, no render pipeline. Match the deliverable to the weight of the work: a single file is the right tier for web motion; don't reach for a bundler when one file does the job.
+
+**Output contract:**
+- One `.html` file: GSAP + plugins from CDN, your markup, and the animation in one inline `<script>`.
+- All motion on **one master timeline** (`const tl = gsap.timeline()`) — a single playhead you can seek.
+- Include the seek harness below so any moment can be frozen for inspection.
+
+**Seek harness — freeze an exact moment for screenshots.** The web parallel of a video player's frame-pin: `?t=N` seeks the master timeline to `N` seconds and pauses, so a screenshot lands on a still, deterministic frame.
+
+```html
+<script>
+  // ... build your master timeline as `tl` ...
+  const t = new URLSearchParams(location.search).get("t");
+  if (t !== null) { tl.pause(); tl.seek(parseFloat(t)); }  // frozen at t seconds
+  // no ?t → plays normally
+  window.__ready = true;            // ready signal for headless wait
+  console.log("duration", tl.duration());
+</script>
+```
+
+**Verify loop — render → freeze → screenshot → check:**
+1. Open the file at three moments across the timeline — start, mid, end:
+   `…/anim.html?t=0`, `?t=<dur/2>`, `?t=<dur>`. Read `tl.duration()` from the console for the end time.
+2. Screenshot each frozen frame.
+3. Check both **fidelity** (does it match the brief?) and **artifacts** (clipped text, elements off-canvas, FOUC before fonts load, jank at seams). Output should look intentional and finished.
+
+Any headless screenshot tool works — your agent's browser tool, or Playwright:
+
+```bash
+npx playwright screenshot --wait-for-timeout=500 "file://$PWD/anim.html?t=1.2" frame-mid.png
+```
+
+**Before you finish:**
+1. Opens standalone in a browser — no console errors, no missing CDN.
+2. All animation on one master timeline; `?t=N` freezes correctly.
+3. Screenshotted at start / mid / end — matches the brief, no artifacts.
+4. `prefers-reduced-motion` honored (timeline simplified or skipped).
+5. Easing is intentional — no accidental `linear` on spatial motion.
+
+A complete runnable template with the harness wired in is in `examples/standalone-template.html`.
+
 ## Quick reference
 
 | Goal | API |
@@ -177,3 +220,4 @@ useEffect(() => {
 - `references/scrolltrigger-cookbook.md` — pin, scrub, horizontal scroll, snap, `ScrollTrigger.batch()` reveals, parallax, nested triggers, and SPA cleanup patterns with full code.
 - `references/scrolltrigger-lenis.md` — full ScrollTrigger + Lenis/Locomotive smooth-scroll sync: canonical wiring, `scrollerProxy`, anchor links, reduced-motion, React (`useGSAP`/`useEffect`), debugging checklist, and symptom→cause table.
 - `examples/hero-timeline.js` — a complete, runnable hero entrance timeline with SplitText, staggered reveals, and reduced-motion handling.
+- `examples/standalone-template.html` — the deliverable template: self-contained (CDN GSAP), one master timeline, the `?t=N` seek harness for screenshot verification, and reduced-motion handling.
