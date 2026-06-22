@@ -1,0 +1,24 @@
+{
+  "name": "web-animation-skills",
+  "version": "0.1.0",
+  "description": "Web animation skills for AI coding agents — GSAP, SVG, Lottie, micro-interactions, page transitions, and 60fps performance, installed straight into your agent.",
+  "author": {
+    "name": "iart.ai",
+    "url": "https://iart.ai"
+  },
+  "homepage": "https://iart.ai",
+  "repository": "https://github.com/iart-ai/web-animation-skills",
+  "license": "MIT",
+  "keywords": [
+    "web-animation",
+    "gsap",
+    "glassmorphism",
+    "svg-animation",
+    "lottie",
+    "micro-interactions",
+    "css-animation",
+    "page-transitions",
+    "accessibility",
+    "claude-skill"
+  ]
+}

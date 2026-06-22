@@ -10,21 +10,29 @@
 npx skills add iart-ai/web-animation-skills
 ```
 
+Or add it as a Claude Code plugin marketplace:
+
+```bash
+/plugin marketplace add iart-ai/web-animation-skills
+```
+
+then `/plugin install web-animation-skills`.
+
 Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## What's included
 
 | Skill | What it does |
 |---|---|
-| [gsap-web](./gsap-web) | Code-driven web motion with GSAP — timelines, ScrollTrigger, SplitText, Flip, and Lenis smooth-scroll sync. |
-| [60fps-animation](./60fps-animation) | Hit 60/120fps by animating only `transform`/`opacity` and killing layout thrash. |
-| [page-transition-animation](./page-transition-animation) | Enter/exit page transitions in the Next.js App Router, plus the AnimatePresence exit fix. |
-| [accessible-animation](./accessible-animation) | Tiered `prefers-reduced-motion` handling that degrades gracefully instead of nuking motion. |
-| [micro-interaction](./micro-interaction) | Hover/press feedback, toggles, toasts, drawers, and list/layout motion with Framer Motion and CSS. |
-| [glassmorphism](./glassmorphism) | Frosted-glass / Apple "Liquid Glass" UI — backdrop-filter panels, edge highlights, refraction, and animated specular sweeps, with reduced-transparency fallbacks. |
-| [svg-animation](./svg-animation) | Stroke draw-on, path morphing, motion-along-path, and animated icons/gradients/filters. |
-| [lottie-animation](./lottie-animation) | Integrate, control, theme, and export Lottie/dotLottie across web, iOS, Android, and React Native. |
-| [ascii-animation](./ascii-animation) | Generative ASCII fields and image/video/3D-to-ASCII for terminals, canvas, and Three.js. |
+| [gsap-web](./skills/gsap-web) | Code-driven web motion with GSAP — timelines, ScrollTrigger, SplitText, Flip, and Lenis smooth-scroll sync. |
+| [60fps-animation](./skills/60fps-animation) | Hit 60/120fps by animating only `transform`/`opacity` and killing layout thrash. |
+| [page-transition-animation](./skills/page-transition-animation) | Enter/exit page transitions in the Next.js App Router, plus the AnimatePresence exit fix. |
+| [accessible-animation](./skills/accessible-animation) | Tiered `prefers-reduced-motion` handling that degrades gracefully instead of nuking motion. |
+| [micro-interaction](./skills/micro-interaction) | Hover/press feedback, toggles, toasts, drawers, and list/layout motion with Framer Motion and CSS. |
+| [glassmorphism](./skills/glassmorphism) | Frosted-glass / Apple "Liquid Glass" UI — backdrop-filter panels, edge highlights, refraction, and animated specular sweeps, with reduced-transparency fallbacks. |
+| [svg-animation](./skills/svg-animation) | Stroke draw-on, path morphing, motion-along-path, and animated icons/gradients/filters. |
+| [lottie-animation](./skills/lottie-animation) | Integrate, control, theme, and export Lottie/dotLottie across web, iOS, Android, and React Native. |
+| [ascii-animation](./skills/ascii-animation) | Generative ASCII fields and image/video/3D-to-ASCII for terminals, canvas, and Three.js. |
 
 ## When it activates
 

@@ -1,0 +1,14 @@
+{
+  "name": "web-animation-skills",
+  "owner": {
+    "name": "iart.ai",
+    "url": "https://iart.ai"
+  },
+  "plugins": [
+    {
+      "name": "web-animation-skills",
+      "source": "./",
+      "description": "Web animation skills for AI coding agents — GSAP, SVG, Lottie, micro-interactions, page transitions, and 60fps performance, installed straight into your agent."
+    }
+  ]
+}
