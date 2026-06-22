@@ -15,7 +15,7 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 | Skill | What it does |
 |---|---|
 | [gsap-web](./gsap-web) | Code-driven web motion with GSAP — timelines, ScrollTrigger, SplitText, Flip, and Lenis smooth-scroll sync. |
-| [performant-web-animation](./performant-web-animation) | Hit 60/120fps by animating only `transform`/`opacity` and killing layout thrash. |
+| [60fps-animation](./60fps-animation) | Hit 60/120fps by animating only `transform`/`opacity` and killing layout thrash. |
 | [page-transition-animation](./page-transition-animation) | Enter/exit page transitions in the Next.js App Router, plus the AnimatePresence exit fix. |
 | [accessible-animation](./accessible-animation) | Tiered `prefers-reduced-motion` handling that degrades gracefully instead of nuking motion. |
 | [micro-interaction](./micro-interaction) | Hover/press feedback, toggles, toasts, drawers, and list/layout motion with Framer Motion and CSS. |
@@ -42,7 +42,7 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 ## Skills
 
 - gsap-web
-- performant-web-animation
+- 60fps-animation
 - page-transition-animation
 - accessible-animation
 - micro-interaction

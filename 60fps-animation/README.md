@@ -1,4 +1,4 @@
-# Performant Web Animation
+# 60fps Web Animation
 
 Eliminate janky web animation by animating only the properties the browser can composite cheaply. For frontend developers fixing stutter, dropped frames, and layout thrashing — mapping expensive `width`/`top`/`box-shadow` animations to GPU-friendly `transform` and `opacity` for smooth 60/120fps motion.
 

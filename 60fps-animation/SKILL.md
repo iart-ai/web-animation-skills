@@ -1,5 +1,5 @@
 ---
-name: performant-web-animation
+name: 60fps-animation
 description: This skill should be used when the user asks to "fix janky CSS animation", "make animation 60fps", "stop layout thrashing", "animate width/height/top/left smoothly", "convert animation to transform", "animate box-shadow performantly", "animate height auto", "FLIP animation", or "why is my scroll/hover animation choppy".
 version: 0.1.0
 ---
