@@ -19,6 +19,7 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 | [page-transition-animation](./page-transition-animation) | Enter/exit page transitions in the Next.js App Router, plus the AnimatePresence exit fix. |
 | [accessible-animation](./accessible-animation) | Tiered `prefers-reduced-motion` handling that degrades gracefully instead of nuking motion. |
 | [micro-interaction](./micro-interaction) | Hover/press feedback, toggles, toasts, drawers, and list/layout motion with Framer Motion and CSS. |
+| [glassmorphism](./glassmorphism) | Frosted-glass / Apple "Liquid Glass" UI — backdrop-filter panels, edge highlights, refraction, and animated specular sweeps, with reduced-transparency fallbacks. |
 | [svg-animation](./svg-animation) | Stroke draw-on, path morphing, motion-along-path, and animated icons/gradients/filters. |
 | [lottie-animation](./lottie-animation) | Integrate, control, theme, and export Lottie/dotLottie across web, iOS, Android, and React Native. |
 | [ascii-animation](./ascii-animation) | Generative ASCII fields and image/video/3D-to-ASCII for terminals, canvas, and Three.js. |
@@ -46,13 +47,14 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 - page-transition-animation
 - accessible-animation
 - micro-interaction
+- glassmorphism
 - svg-animation
 - lottie-animation
 - ascii-animation
 
 ## Topics
 
-`web-animation` `gsap` `svg-animation` `lottie` `micro-interactions` `css-animation` `page-transitions` `accessibility` `claude-skill`
+`web-animation` `gsap` `glassmorphism` `svg-animation` `lottie` `micro-interactions` `css-animation` `page-transitions` `accessibility` `claude-skill`
 
 ## More packs
 
