@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Animation · GSAP · Craft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Sora:wght@600;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Sora:wght@600;800&display=swap"></noscript>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:     #0a0e16;
+    --bg2:    #0e1422;
+    --ink:    #eef3ff;
+    --muted:  #7d89a6;
+    --line:   #1c2940;
+    --cyan:   #38e1d6;
+    --violet: #8b6cff;
+    --pink:   #ff5fb0;
+    --lime:   #b8ff5f;
+    --amber:  #ffcb5f;
+    --glass:  rgba(255,255,255,0.06);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  #stage {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #131c30 0%, var(--bg2) 45%, var(--bg) 100%);
+    perspective: 1300px;
+    overflow: hidden;
+  }
+
+  /* subtle techy grid */
+  .grid {
+    position: absolute; inset: -10%;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 46px 46px;
+    opacity: 0.35;
+    mask-image: radial-gradient(80% 70% at 50% 45%, #000 30%, transparent 80%);
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(70px); opacity: 0.45;
+    will-change: transform; pointer-events: none;
+  }
+  #blobA { width: 44vmin; height: 44vmin; background: var(--violet); top: -12%; left: -8%; }
+  #blobB { width: 40vmin; height: 40vmin; background: var(--cyan);   bottom: -14%; right: -10%; opacity: 0.30; }
+  #blobC { width: 28vmin; height: 28vmin; background: var(--pink);   top: 55%; left: 62%; opacity: 0.22; }
+
+  .scene {
+    position: absolute;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    will-change: transform, opacity;
+    z-index: 3;
+  }
+
+  .line { display: flex; gap: 0 0.06em; overflow: hidden; padding: 0.05em 0; justify-content: center; }
+  .char { display: inline-block; will-change: transform, opacity; }
+
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(0.66rem, 1.5vw, 1rem);
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    text-indent: 0.42em;
+  }
+
+  .word {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 11vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-transform: uppercase;
+    white-space: nowrap;
+    will-change: transform, opacity;
+  }
+  .word.cyan   { color: var(--cyan); }
+  .word.violet { color: var(--violet); }
+  .word.lime   { color: var(--lime); }
+  .word.stroke { color: transparent; -webkit-text-stroke: 2px var(--ink); }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  /* ===== Browser window frame ===== */
+  #browser {
+    position: absolute; z-index: 2;
+    width: min(70vw, 720px);
+    height: min(46vh, 420px);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #121a2c, #0c1322);
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
+    overflow: hidden;
+    will-change: transform, opacity;
+  }
+  #browser .bar {
+    height: 44px; display: flex; align-items: center; gap: 8px;
+    padding: 0 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--line);
+  }
+  #browser .dot { width: 12px; height: 12px; border-radius: 50%; will-change: transform; }
+  #browser .dot.r { background: #ff5f57; }
+  #browser .dot.y { background: #febc2e; }
+  #browser .dot.g { background: #28c840; }
+  #browser .url {
+    margin-left: 14px; flex: 1; height: 22px; border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--muted); letter-spacing: 0.02em;
+    transform-origin: left center;
+  }
+  #browser .body {
+    position: relative; height: calc(100% - 44px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .codeline {
+    position: absolute; height: 12px; border-radius: 6px;
+    background: var(--line); will-change: transform, opacity;
+    transform-origin: left center;
+  }
+
+  /* cursor */
+  #cursor {
+    position: absolute; z-index: 6; width: 26px; height: 26px;
+    pointer-events: none; will-change: transform, opacity;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  }
+  #cursor svg { display: block; }
+  #clickring {
+    position: absolute; z-index: 5; width: 40px; height: 40px;
+    border: 2px solid var(--cyan); border-radius: 50%;
+    will-change: transform, opacity; pointer-events: none;
+  }
+
+  /* toggle switch */
+  #toggleWrap {
+    position: absolute; z-index: 4;
+    display: flex; align-items: center; gap: 18px;
+    will-change: transform, opacity;
+  }
+  #toggle {
+    width: 92px; height: 48px; border-radius: 999px;
+    background: var(--line); position: relative;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
+  }
+  #knob {
+    position: absolute; top: 5px; left: 5px;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    will-change: transform;
+  }
+  #toggleLabel {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: clamp(1rem, 3vw, 1.8rem); letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* glass card */
+  #glassCard {
+    position: absolute; z-index: 4;
+    width: min(58vw, 460px); padding: 34px 36px;
+    border-radius: 20px;
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.18);
+    text-align: left;
+    will-change: transform, opacity;
+  }
+  #glassCard .gc-eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--cyan);
+    margin-bottom: 14px;
+  }
+  #glassCard .gc-title {
+    font-family: 'Sora', sans-serif; font-weight: 800;
+    font-size: clamp(1.6rem, 4.5vw, 2.8rem); color: var(--ink);
+    line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+  #glassCard .gc-row { display: flex; gap: 10px; }
+  #glassCard .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12); color: var(--ink);
+  }
+
+  /* brand finale */
+  .brandmark {
+    font-family: 'Sora', sans-serif; font-weight: 800;
+    text-transform: lowercase;
+    font-size: clamp(3rem, 16vw, 14rem);
+    line-height: 0.84; letter-spacing: -0.05em; color: var(--ink);
+  }
+  .brandmark .red { color: var(--cyan); }
+
+  .bracket {
+    position: absolute; z-index: 1;
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: clamp(8rem, 40vw, 34rem); line-height: 1;
+    color: var(--violet); opacity: 0.16;
+    will-change: transform, opacity; pointer-events: none;
+  }
+  #brkL { left: 4%; }
+  #brkR { right: 4%; }
+
+  /* transition overlay */
+  #fx { position: fixed; inset: 0; pointer-events: none; z-index: 45; overflow: hidden; }
+  .panel { position: absolute; will-change: transform; visibility: hidden; }
+
+  #flash { position: fixed; inset: 0; background: var(--cyan); opacity: 0; pointer-events: none; z-index: 50; }
+
+  .grain {
+    position: fixed; inset: 0; pointer-events: none;
+    opacity: 0.05; mix-blend-mode: overlay; z-index: 60;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #progress {
+    position: fixed; left: 0; bottom: 0; height: 3px; width: 100%;
+    transform: scaleX(0); transform-origin: left;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    z-index: 70;
+  }
+
+  .ui {
+    position: fixed; font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    z-index: 80; color: var(--muted);
+  }
+  #brand { top: 22px; left: 24px; }
+  #brand b { color: var(--cyan); }
+  #replay {
+    bottom: 20px; right: 22px; background: transparent;
+    border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 9px 18px; cursor: pointer; color: var(--muted);
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  #replay:hover { color: var(--bg); background: var(--cyan); border-color: var(--cyan); }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div class="grid"></div>
+    <div class="blob" id="blobA"></div>
+    <div class="blob" id="blobB"></div>
+    <div class="blob" id="blobC"></div>
+
+    <div class="bracket mono" id="brkL">&lt;/</div>
+    <div class="bracket mono" id="brkR">&gt;</div>
+
+    <!-- Scene 1 : kicker + intro -->
+    <div class="scene" id="s1">
+      <div class="line"><span class="kicker">Motion · Craft · GSAP</span></div>
+      <div class="line"><span class="word">BUILT</span></div>
+      <div class="line"><span class="word stroke">in&nbsp;</span><span class="word cyan">code</span></div>
+    </div>
+
+    <!-- Scene 2 : browser window builds (decor element) -->
+    <div id="browser">
+      <div class="bar">
+        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+        <div class="url">iart.ai/web-animation</div>
+      </div>
+      <div class="body">
+        <div class="codeline" style="width:42%; top:24%; left:9%; background:var(--violet)"></div>
+        <div class="codeline" style="width:64%; top:40%; left:9%;"></div>
+        <div class="codeline" style="width:30%; top:56%; left:9%; background:var(--cyan)"></div>
+        <div class="codeline" style="width:52%; top:72%; left:9%;"></div>
+      </div>
+    </div>
+    <svg id="cursor" viewBox="0 0 24 24" width="26" height="26"><path d="M3 2l7 18 2.5-7.5L20 10 3 2z" fill="#eef3ff" stroke="#0a0e16" stroke-width="1.2"/></svg>
+    <div id="clickring"></div>
+
+    <!-- Scene 3 : SMOOTH / 60FPS with toggle -->
+    <div class="scene" id="s3">
+      <div class="line"><span class="word cyan">SMOOTH</span></div>
+      <div class="line"><span class="word stroke">60FPS</span></div>
+    </div>
+    <div id="toggleWrap">
+      <div id="toggle"><div id="knob"></div></div>
+      <div id="toggleLabel">OFF</div>
+    </div>
+
+    <!-- Scene 4 : glass card -->
+    <div id="glassCard">
+      <div class="gc-eyebrow">// micro-interaction</div>
+      <div class="gc-title">Glass &amp; Light</div>
+      <div class="gc-row">
+        <span class="pill">ease.inOut</span>
+        <span class="pill">will-change</span>
+        <span class="pill">60fps</span>
+      </div>
+    </div>
+
+    <!-- Scene 5 : CRAFT bridge -->
+    <div class="scene" id="s5">
+      <div class="line"><span class="word violet">CRAFT</span></div>
+    </div>
+
+    <!-- Scene 6 : brand finale -->
+    <div class="scene" id="s6">
+      <div class="line"><span class="kicker">Web · Animation</span></div>
+      <div class="line"><span class="word brandmark">iart<span class="red">.</span>ai</span></div>
+      <div class="line"><span class="kicker">Animate the Interface</span></div>
+    </div>
+  </div>
+
+  <div id="fx">
+    <div class="panel" id="p1"></div>
+    <div class="panel" id="p2"></div>
+    <div class="panel" id="p3"></div>
+    <div class="panel" id="p4"></div>
+  </div>
+
+  <div id="flash"></div>
+  <div class="grain"></div>
+  <div id="progress"></div>
+  <div class="ui" id="brand">◆ <b>iart.ai</b></div>
+  <button class="ui" id="replay">↻ Replay</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  function splitChars(word) {
+    const text = word.textContent;
+    word.textContent = '';
+    const chars = [];
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.innerHTML = (ch === ' ') ? '&nbsp;' : ch;
+      word.appendChild(span);
+      if (ch !== ' ') chars.push(span);
+    }
+    return chars;
+  }
+  document.querySelectorAll('.word:not(.brandmark)').forEach(splitChars);
+
+  function splitBrand(el) {
+    const html = el.innerHTML;
+    el.innerHTML = '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    tmp.childNodes.forEach(node => {
+      const isDot = node.nodeType === 1;
+      for (const ch of node.textContent) {
+        const span = document.createElement('span');
+        span.className = 'char' + (isDot ? ' red' : '');
+        span.textContent = ch;
+        el.appendChild(span);
+      }
+    });
+  }
+  document.querySelectorAll('.brandmark').forEach(splitBrand);
+
+  const charsOf = (sel) => gsap.utils.toArray(sel + ' .char');
+
+  gsap.set('.scene', { autoAlpha: 0 });
+  gsap.set(['#browser', '#cursor', '#clickring', '#toggleWrap', '#glassCard'], { autoAlpha: 0 });
+
+  gsap.to('#blobA', { xPercent: 14, yPercent: 18, duration: 9, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('#blobB', { xPercent: -16, yPercent: -12, duration: 11, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('#blobC', { xPercent: -20, yPercent: 14, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('.grid', { xPercent: 2, yPercent: 2, duration: 12, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+  function build() {
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    tl.fromTo('#progress', { scaleX: 0 }, { scaleX: 1, duration: 7.8, ease: 'none' }, 0);
+
+    // brackets breathe across the whole piece
+    tl.fromTo(['#brkL','#brkR'], { autoAlpha: 0, scale: 0.7 }, { autoAlpha: 0.16, scale: 1, duration: 1.2 }, 0.2)
+      .to('#brkL', { x: -14, duration: 7, ease: 'sine.inOut' }, 0.6)
+      .to('#brkR', { x: 14, duration: 7, ease: 'sine.inOut' }, 0.6);
+
+    // ===== SCENE 1 (0.0 – 1.4) =====
+    tl.set('#s1', { autoAlpha: 1 }, 0)
+      .from('#s1 .kicker', { yPercent: 100, opacity: 0, duration: 0.5 }, 0.05)
+      .from(charsOf('#s1'), {
+        yPercent: 120, rotateX: -90, opacity: 0,
+        stagger: { each: 0.03, from: 'start' }, duration: 0.6
+      }, 0.18)
+      // TRANSITION 1 — IMPLODE
+      .to(charsOf('#s1').concat(gsap.utils.toArray('#s1 .kicker')), {
+        scale: 0, rotation: 120, opacity: 0, filter: 'blur(6px)',
+        stagger: { each: 0.02, from: 'edges' }, duration: 0.45, ease: 'power3.in'
+      }, 1.15)
+      .set('#s1', { autoAlpha: 0 });
+
+    // ===== SCENE 2 (1.4 – 3.0) BROWSER builds + cursor clicks =====
+    gsap.set('#browser', { scale: 0.6, rotateX: 22, transformOrigin: '50% 60%' });
+    tl.set('#browser', { autoAlpha: 1 }, 1.4)
+      .from('#browser', { scale: 0.6, rotateX: 22, opacity: 0, duration: 0.55, ease: 'back.out(1.4)' }, 1.4)
+      .to('#browser', { rotateX: 0, scale: 1, duration: 0.55, ease: 'power3.out' }, 1.45)
+      .from('#browser .dot', { scale: 0, stagger: 0.06, duration: 0.3, ease: 'back.out(2.5)' }, 1.7)
+      .from('#browser .url', { scaleX: 0, opacity: 0, duration: 0.45 }, 1.85)
+      .from('#browser .codeline', { scaleX: 0, opacity: 0, stagger: 0.09, duration: 0.4 }, 2.05);
+
+    // cursor flies in and clicks a codeline
+    gsap.set('#cursor', { x: 240, y: 200 });
+    gsap.set('#clickring', { x: 0, y: 0, scale: 0, autoAlpha: 0, transformOrigin: '50% 50%' });
+    tl.set('#cursor', { autoAlpha: 1 }, 2.2)
+      .fromTo('#cursor', { x: 320, y: 240, autoAlpha: 0 }, { x: 40, y: 40, autoAlpha: 1, duration: 0.6, ease: 'power3.out' }, 2.2)
+      .to('#cursor', { scale: 0.82, duration: 0.1, yoyo: true, repeat: 1 }, 2.85)
+      .set('#clickring', { x: 52, y: 52, autoAlpha: 1 }, 2.86)
+      .fromTo('#clickring', { scale: 0, autoAlpha: 0.9 }, { scale: 1.4, autoAlpha: 0, duration: 0.5, ease: 'power2.out' }, 2.86)
+      .to('#cursor', { autoAlpha: 0, x: 80, y: -20, duration: 0.3 }, 2.95)
+      .to('#browser', { scale: 0.9, autoAlpha: 0, filter: 'blur(8px)', duration: 0.4, ease: 'power2.in' }, 2.95);
+
+    // TRANSITION 2 — VENETIAN SHUTTER
+    const blinds = ['#p1','#p2','#p3','#p4'];
+    const blindColors = ['var(--bg2)','var(--violet)','var(--cyan)','var(--bg2)'];
+    gsap.set(blinds, {
+      visibility: 'visible', left: 0, width: '100%', height: '25.2%',
+      top: (i) => (i * 25) + '%',
+      backgroundColor: (i) => blindColors[i],
+      scaleY: 0, transformOrigin: 'top center'
+    });
+    tl.to(blinds, { scaleY: 1, duration: 0.24, stagger: 0.05, ease: 'power2.in' }, 3.0)
+      .set(blinds, { transformOrigin: 'bottom center' }, 3.34)
+      .to(blinds, { scaleY: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out' }, 3.36)
+      .set(blinds, { visibility: 'hidden' }, 3.7);
+
+    // ===== SCENE 3 (3.3 – 4.6) SMOOTH / 60FPS + toggle flip =====
+    tl.set('#s3', { autoAlpha: 1 }, 3.3)
+      .from(charsOf('#s3'), {
+        yPercent: 130, opacity: 0, skewY: 8,
+        stagger: { each: 0.03, from: 'start' }, duration: 0.5
+      }, 3.32);
+    // position S3 text up, toggle below
+    gsap.set('#s3', { y: '-16vh' });
+    gsap.set('#toggleWrap', { y: '18vh' });
+    tl.set('#toggleWrap', { autoAlpha: 1 }, 3.5)
+      .from('#toggleWrap', { y: '26vh', opacity: 0, duration: 0.5, ease: 'back.out(1.6)' }, 3.5)
+      // the flip: knob slides, toggle turns cyan, label ON
+      .to('#toggle', { backgroundColor: 'var(--cyan)', duration: 0.3 }, 4.0)
+      .to('#knob', { x: 44, duration: 0.35, ease: 'back.out(2)' }, 4.0)
+      .call(() => { document.getElementById('toggleLabel').textContent = 'ON'; }, null, 4.18)
+      .fromTo('#toggleLabel', { scale: 0.6, color: 'var(--muted)' }, { scale: 1, color: 'var(--cyan)', duration: 0.3, ease: 'back.out(2)' }, 4.18)
+      // flash + exit
+      .to('#flash', { opacity: 0.22, duration: 0.05 }, 4.2)
+      .to('#flash', { opacity: 0, duration: 0.3 }, 4.25)
+      .to(['#s3','#toggleWrap'], { opacity: 0, scale: 0.85, filter: 'blur(6px)', duration: 0.35, ease: 'power2.in' }, 4.45)
+      .set(['#s3','#toggleWrap'], { autoAlpha: 0 });
+
+    // TRANSITION 3 — COLOR-BAND WIPE
+    const bands = ['#p1','#p2','#p3'];
+    const bandColors = ['var(--violet)','var(--bg2)','var(--cyan)'];
+    gsap.set(bands, {
+      visibility: 'visible', left: '-5%', width: '110%', height: '120%',
+      top: 0, skewY: -6,
+      backgroundColor: (i) => bandColors[i],
+      yPercent: 130
+    });
+    tl.to(bands, { yPercent: -130, duration: 0.55, stagger: 0.08, ease: 'power3.inOut' }, 4.55)
+      .set(bands, { visibility: 'hidden' }, 5.2);
+
+    // ===== SCENE 4 (4.8 – 5.9) GLASS CARD reveal =====
+    gsap.set('#glassCard', { y: 40, rotateY: 18, transformOrigin: '50% 50%' });
+    tl.set('#glassCard', { autoAlpha: 1 }, 4.8)
+      .from('#glassCard', { y: 60, rotateY: 24, opacity: 0, scale: 0.9, duration: 0.6, ease: 'power3.out' }, 4.8)
+      .to('#glassCard', { rotateY: 0, y: 0, duration: 0.6 }, 4.85)
+      .from('#glassCard .gc-eyebrow', { y: 14, opacity: 0, duration: 0.4 }, 5.05)
+      .from('#glassCard .gc-title', { y: 18, opacity: 0, duration: 0.45 }, 5.15)
+      .from('#glassCard .pill', { y: 14, opacity: 0, stagger: 0.07, duration: 0.35, ease: 'back.out(2)' }, 5.3)
+      .to('#glassCard', { scale: 1.04, duration: 0.5, ease: 'sine.inOut' }, 5.5)
+      .to('#glassCard', { y: -40, opacity: 0, rotateX: 30, filter: 'blur(8px)', duration: 0.4, ease: 'power2.in' }, 5.7)
+      .set('#glassCard', { autoAlpha: 0 });
+
+    // TRANSITION 4 — WHIP-PAN BLUR
+    tl.to('#stage', { x: -90, filter: 'blur(7px)', duration: 0.16, ease: 'power2.in' }, 5.78)
+      .set('#stage', { x: 100 }, 5.94)
+      .to('#stage', { x: 0, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, 5.94);
+
+    // ===== SCENE 5 (5.95 – 6.5) CRAFT bridge =====
+    tl.set('#s5', { autoAlpha: 1 }, 5.95)
+      .from(charsOf('#s5'), {
+        yPercent: 110, rotateX: -80, opacity: 0,
+        stagger: { each: 0.045, from: 'center' }, duration: 0.5, ease: 'back.out(1.7)'
+      }, 5.95)
+      .to(charsOf('#s5'), {
+        yPercent: -130, opacity: 0, filter: 'blur(10px)',
+        stagger: { each: 0.025, from: 'edges' }, duration: 0.38, ease: 'power3.in'
+      }, 6.45)
+      .set('#s5', { autoAlpha: 0 });
+
+    // TRANSITION 5 — IRIS open (circular reveal)
+    gsap.set('#p1', {
+      visibility: 'visible', top: '50%', left: '50%', width: '300vmax', height: '300vmax',
+      xPercent: -50, yPercent: -50, borderRadius: '50%',
+      backgroundColor: 'var(--bg)', scale: 1
+    });
+    tl.set('#p1', { scale: 1 }, 6.6)
+      .to('#p1', { scale: 0, duration: 0.5, ease: 'power3.inOut' }, 6.6)
+      .set('#p1', { visibility: 'hidden' }, 7.1);
+
+    // ===== SCENE 6 (6.7 – 7.8) BRAND finale =====
+    tl.set('#s6', { autoAlpha: 1 }, 6.7)
+      .from('#s6 .kicker', { yPercent: 100, opacity: 0, stagger: 0.15, duration: 0.5 }, 6.7)
+      .from(charsOf('#s6 .brandmark'), {
+        yPercent: 115, rotateX: -85, opacity: 0,
+        stagger: { each: 0.06, from: 'start' }, duration: 0.7, ease: 'back.out(1.8)'
+      }, 6.78)
+      .from('#s6 .brandmark .red', { scale: 0, duration: 0.5, ease: 'back.out(3)' }, 7.2)
+      .to('#s6 .brandmark .red', { scale: 1.3, duration: 0.4, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 7.45)
+      .to('#s6 .brandmark', { scale: 1.03, duration: 1.0, ease: 'sine.inOut' }, 7.4)
+      .to('#flash', { opacity: 0.25, duration: 0.06 }, 6.78)
+      .to('#flash', { opacity: 0, duration: 0.3 }, 6.84);
+
+    tl.to({}, { duration: 0.5 });
+    return tl;
+  }
+
+  let master = build();
+  document.getElementById('replay').addEventListener('click', () => master.restart());
+</script>
+</body>
+</html>

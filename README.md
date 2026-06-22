@@ -2,6 +2,8 @@
 
 > Web animation skills for AI coding agents — GSAP, SVG, Lottie, micro-interactions, page transitions, and 60fps performance, installed straight into your agent.
 
+![Web Animation Skills — animated showcase](./showcase.gif)
+
 ## Install
 
 ```bash
