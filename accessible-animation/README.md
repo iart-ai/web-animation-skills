@@ -21,4 +21,4 @@ Honor `prefers-reduced-motion: reduce` as graceful degradation, not a kill switc
 - `references/patterns.md` — reduced-motion patterns across CSS, GSAP, Framer Motion, and Lenis
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

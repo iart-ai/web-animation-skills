@@ -22,4 +22,4 @@ Render motion entirely with text characters — extremely lightweight, distincti
 - `scripts/` — helper scripts
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

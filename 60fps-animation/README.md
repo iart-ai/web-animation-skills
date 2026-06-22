@@ -21,4 +21,4 @@ Eliminate janky web animation by animating only the properties the browser can c
 - `references/patterns-and-profiling.md` — animation patterns and how to profile for jank
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

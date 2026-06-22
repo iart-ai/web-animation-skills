@@ -21,4 +21,4 @@ Implement page enter/exit transitions in the Next.js App Router, and fix the mos
 - `references/full-examples.md` — complete working transition examples
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

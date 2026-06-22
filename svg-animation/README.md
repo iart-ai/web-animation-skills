@@ -21,4 +21,4 @@ Crisp, lightweight, infinitely scalable vector motion for icons, illustrations, 
 - `references/svg-techniques.md` — detailed SVG animation techniques
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

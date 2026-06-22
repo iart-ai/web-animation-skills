@@ -21,4 +21,4 @@ The bridge from After Effects to product: vector animation shipped as JSON (or z
 - `references/integration-and-export.md` — integration details and the After Effects export checklist
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

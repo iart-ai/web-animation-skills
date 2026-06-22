@@ -22,4 +22,4 @@ Small, functional UI motion that makes an interface feel responsive and alive: h
 - `references/framer-motion-recipes.md` — Framer Motion (motion/react) recipes
 
 ---
-Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Web Animation Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
