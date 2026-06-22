@@ -182,3 +182,6 @@ Wrap an app in `<MotionConfig reducedMotion="user">` to globally strip transform
 - Prefer `transform`/`opacity`; Framer Motion already uses transforms for `x/y/scale/rotate`.
 - For frequently-updated values (cursor follow, scroll), use `useMotionValue` + `useSpring` instead of React state to avoid re-renders.
 - `layout` is powerful but measure-heavy; avoid putting it on hundreds of simultaneously-animating nodes.
+
+---
+Tune the timing and easing and a micro-interaction feels effortless. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

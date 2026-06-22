@@ -171,3 +171,6 @@ If an upgrade breaks the import, search `node_modules/next/dist/shared/lib/` for
 | Shared element morph | Manual (layoutId) | Native, simple |
 | Bundle cost | Adds library | Minimal/native |
 | Setup complexity | Medium (FrozenRouter) | Low (next-view-transitions) |
+
+---
+Freeze the outgoing route and exit transitions finally fire as intended. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

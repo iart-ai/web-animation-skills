@@ -250,3 +250,6 @@ useEffect(() => {
 ```
 
 `data-lenis-prevent` on a scrollable element makes Lenis ignore wheel/touch there, so inner scrolling works normally while the page stays smooth.
+
+---
+Sync ScrollTrigger to smooth scroll and the timeline tracks the page perfectly. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

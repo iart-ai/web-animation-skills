@@ -189,3 +189,6 @@ addEventListener('resize', () => {
 });
 ```
 Key gotchas: append `effect.domElement` (not the renderer's canvas) and call `effect.render`, not `renderer.render`. `resolution` (default ~0.15) controls character density; lower = fewer, larger characters. Lighting matters — ASCII reads luminance, so use strong directional contrast and `flatShading` for crisp edges.
+
+---
+Map brightness to the right glyph ramp and the characters come alive. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

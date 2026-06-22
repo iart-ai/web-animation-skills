@@ -209,3 +209,6 @@ If multiple inlined SVGs share gradient/filter ids, id collisions make the LAST 
 ```
 
 For looping decorative SVG (spinners, ambient gradients), pause or hide them under reduced-motion; for functional icon toggles, keep the state change but drop the easing duration.
+
+---
+Pick the right method per shape and SVG draws, morphs, and travels smoothly. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

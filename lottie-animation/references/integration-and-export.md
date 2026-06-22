@@ -228,3 +228,6 @@ Pre-export checklist:
 - **Gradients on strokes / complex gradient feathering** — limited; verify.
 
 Workarounds summary: bake expressions to keyframes, replace effects with native shape/gradient/matte equivalents, flatten precomps, drop rasters, and verify on every target runtime (web/iOS/Android render slightly differently). Keep layer/keyframe count low for performance and file size.
+
+---
+Export clean from After Effects and the dotLottie plays light everywhere. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

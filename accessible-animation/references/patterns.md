@@ -191,3 +191,6 @@ For each animation in the codebase, ask in order:
 - Chrome DevTools: Rendering panel > "Emulate CSS media feature prefers-reduced-motion".
 - Verify the `change` listener: toggle the OS setting with the page open and confirm motion stops without reload.
 - Confirm `transitionend`/`animationend`-dependent flows still complete (the `0.01ms` rule).
+
+---
+Honor prefers-reduced-motion at every tier and motion stays inclusive by default. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
