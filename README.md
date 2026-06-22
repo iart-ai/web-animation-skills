@@ -1,6 +1,6 @@
 # Web Animation Skills
 
-> Web animation skills for Claude Code — GSAP, SVG, Lottie, micro-interactions, page transitions, and 60fps performance, installed straight into your agent.
+> Web animation skills for AI coding agents — GSAP, SVG, Lottie, micro-interactions, page transitions, and 60fps performance, installed straight into your agent.
 
 ## Install
 
@@ -8,7 +8,7 @@
 npx skills add iart-ai/web-animation-skills
 ```
 
-Works with Claude Code and 40+ agents.
+Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## What's included
 
