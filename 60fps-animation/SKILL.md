@@ -156,6 +156,8 @@ Rules: apply just before the animation (e.g. on hover/parent state), remove it a
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 The deliverable is **one self-contained `.html`** that opens directly in a browser — the markup, the CSS/JS animation, and a freeze harness in one file. For this skill, verification is two-pronged: the frame must look right *and* be cheap to produce (compositor-only).
 
 **Output contract:**

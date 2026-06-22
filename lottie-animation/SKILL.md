@@ -127,6 +127,8 @@ The same `.lottie`/`.json` plays across all; segments and progress concepts matc
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a self-contained Lottie demo (looping illustration, animated icon, empty state) the deliverable is **one HTML file that opens directly in a browser** — the dotLottie/lottie-web runtime from CDN, a `<canvas>`, and your `.lottie`/`.json` (a relative file or a data URL). No build step. One file is the right tier for shipping a player; don't reach for a bundler.
 
 **Output contract:**

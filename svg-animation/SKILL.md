@@ -124,6 +124,8 @@ SMIL caveat: not supported in IE/old Edge and historically deprecation-flagged; 
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a self-contained icon/logo/draw-on the deliverable is **one HTML file that opens directly in a browser** — inline the SVG in the markup, drive the animation with one mechanism, no build step. One file is the right tier for a vector asset; don't reach for a bundler.
 
 **Output contract:**

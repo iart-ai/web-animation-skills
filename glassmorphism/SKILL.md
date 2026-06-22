@@ -113,6 +113,8 @@ Glass is decoration; content must stay legible and the effect must be defeatable
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a self-contained glass demo (card, nav, modal, liquid-glass hero) the deliverable is **one HTML file that opens directly in a browser** — markup, CSS, and (if liquid) one inline SVG filter, no build step. A single file is the right tier for a glass surface; don't reach for a bundler. The panel **must overlap a real backdrop** (drop in a photo or gradient) or there is nothing to frost and the demo lies.
 
 **Output contract:**

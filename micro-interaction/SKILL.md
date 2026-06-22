@@ -121,6 +121,8 @@ Loading → success → error should be one continuous motion (e.g. a button mor
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a self-contained interaction demo (toggle, like button, toast, drawer) the deliverable is **one HTML file that opens directly in a browser**. Pure-CSS interactions ship as-is; for a Framer Motion demo, load React + `motion` from CDN (`esm.sh`) into one inline module — no build step. One file is the right tier; don't reach for a bundler.
 
 **Output contract:**

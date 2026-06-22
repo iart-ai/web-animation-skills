@@ -162,6 +162,8 @@ useEffect(() => {
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a self-contained animation (hero, reveal, loop, micro-scene) the deliverable is **one HTML file that opens directly in a browser** — no build step, no framework, no render pipeline. Match the deliverable to the weight of the work: a single file is the right tier for web motion; don't reach for a bundler when one file does the job.
 
 **Output contract:**

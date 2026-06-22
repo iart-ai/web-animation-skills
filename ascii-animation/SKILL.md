@@ -128,6 +128,8 @@ Use `ESC + '2J'` to clear the whole screen, `ESC + 'H'` for home (cheaper per fr
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a self-contained web ASCII piece (generative field, image/video→ASCII, `AsciiEffect` scene) the deliverable is **one HTML file that opens directly in a browser** — the `<pre>`/canvas, the ramp, and the rAF loop inline (Three.js from CDN if used). No build step. One file is the right tier; don't reach for a bundler. (Terminal/CLI pieces verify differently — capture stdout or a screenshot of the terminal.)
 
 **Output contract:**
