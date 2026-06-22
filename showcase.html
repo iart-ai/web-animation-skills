@@ -394,7 +394,7 @@
   gsap.to('.grid', { xPercent: 2, yPercent: 2, duration: 12, repeat: -1, yoyo: true, ease: 'sine.inOut' });
 
   function build() {
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' }, paused: true });
     tl.fromTo('#progress', { scaleX: 0 }, { scaleX: 1, duration: 7.8, ease: 'none' }, 0);
 
     // brackets breathe across the whole piece
@@ -514,11 +514,11 @@
       .set('#s5', { autoAlpha: 0 });
 
     // TRANSITION 5 — IRIS open (circular reveal)
-    gsap.set('#p1', {
+    tl.set('#p1', {
       visibility: 'visible', top: '50%', left: '50%', width: '300vmax', height: '300vmax',
       xPercent: -50, yPercent: -50, borderRadius: '50%',
       backgroundColor: 'var(--bg)', scale: 1
-    });
+    }, 6.59);
     tl.set('#p1', { scale: 1 }, 6.6)
       .to('#p1', { scale: 0, duration: 0.5, ease: 'power3.inOut' }, 6.6)
       .set('#p1', { visibility: 'hidden' }, 7.1);
@@ -541,6 +541,7 @@
   }
 
   let master = build();
+  master.play(0);
   document.getElementById('replay').addEventListener('click', () => master.restart());
 </script>
 </body>
